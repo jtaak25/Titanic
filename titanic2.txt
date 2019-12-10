@@ -1,0 +1,87 @@
+import numpy as np
+import pandas as pd
+import seaborn as sns
+from matplotlib import pyplot as plt
+from matplotlib import style
+from sklearn import linear_model
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import Perceptron
+from sklearn.linear_model import SGDClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC, LinearSVC
+from sklearn.naive_bayes import GaussianNB
+
+train_df = pd.read_csv("titanic.csv")
+
+#outputs the data in the csv file
+train_df.describe()
+
+#outputs the names of the columns in the csv file
+train_df.columns.values
+
+#plotting some factors correlating to survival rate
+Survived = 'survived'
+not_Survived = 'not Survived'
+
+fig, axes = plt.subplots(nrows=1, ncols=2,figsize=(10, 4))
+
+women = train_df[train_df['Sex']=='female']
+
+men = train_df[train_df['Sex']=='male']
+
+ax = sns.distplot(women[women['Survived']==1].Age.dropna(), bins=18, label = Survived, ax = axes[0], kde =False)
+
+ax = sns.distplot(women[women['Survived']==0].Age.dropna(), bins=40, label = not_Survived, ax = axes[0], kde =False)
+
+ax.legend()
+
+ax.set_title('Female')
+
+ax = sns.distplot(men[men['Survived']==1].Age.dropna(), bins=18, label = Survived, ax = axes[1], kde = False)
+
+ax = sns.distplot(men[men['Survived']==0].Age.dropna(), bins=40, label = not_Survived, ax = axes[1], kde = False)
+
+ax.legend()
+_ = ax.set_title('Male')
+
+
+
+grid = sns.FacetGrid(train_df, col='Survived', row='Pclass', size=2.2, aspect=1.6)
+
+grid.map(plt.hist, 'Age', alpha=.5, bins=20)
+
+grid.add_legend();
+
+
+#Pclass
+sns.barplot(x='Pclass', y='Survived', data=train_df)
+
+
+
+
+data = [train_df, test_df]
+for dataset in data:
+    dataset['relatives'] = dataset['SibSp'] + dataset['Parch']
+    dataset.loc[dataset['relatives'] > 0, 'not_alone'] = 0
+    dataset.loc[dataset['relatives'] == 0, 'not_alone'] = 1
+    dataset['not_alone'] = dataset['not_alone'].astype(int)
+train_df['not_alone'].value_counts()
+
+#survival as a function of age
+ggplot(titanic_data, aes(x=Age, fill=factor(Survived))) +
+  geom_histogram(bins=30)+
+  facet_grid(.~Sex)+
+  ggtitle("Age vs Survived")+
+  scale_fill_discrete(name="Survived")
+
+
+
+
+
+
+
+
+
+
